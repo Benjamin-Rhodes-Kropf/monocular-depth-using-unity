@@ -10,15 +10,19 @@ namespace UnchartedLimbo.NN.Depth
         [Header("Object References")]
         public NNModel neuralNetworkModel;
         public Texture       inputTexture;
+        private WebCamTexture _webCamTexture;
 
         [Header("Parameters")]
         public bool calculateDepthExtents;
-        
+        private readonly int desiredWidth = 256;  // Model's desired width
+        private readonly int desiredHeight = 256; // Model's desired height
+
         [Header("Events")]
         public UnityEvent<RenderTexture> OnColorReady;
         public UnityEvent<RenderTexture> OnDepthSolved;
         public UnityEvent<float>         OnImageResized;
         public UnityEvent<Vector2>       OnDepthExtentsCalculated;
+        private RenderTexture _resizedTexture;
         
         public Texture InputTexture
         {
@@ -33,22 +37,60 @@ namespace UnchartedLimbo.NN.Depth
 
         private void Start()
         {
+            // Initialize and start the webcam with desired resolution
+            _webCamTexture = new WebCamTexture(desiredWidth, desiredHeight);
+            _webCamTexture.Play();
+
             InitializeNetwork();
             AllocateObjects();
         }
 
         private void Update()
         {
-            if (inputTexture == null)
+            if (_webCamTexture == null)
+            {
+                Debug.Log("WebCamTexture is Null");
                 return;
+            }
+
+            // Ensure _resizedTexture is allocated with the desired dimensions
+            if (_resizedTexture == null || _resizedTexture.width != desiredWidth || _resizedTexture.height != desiredHeight)
+            {
+                if (_resizedTexture != null)
+                {
+                    _resizedTexture.Release();
+                }
+                _resizedTexture = new RenderTexture(desiredWidth, desiredHeight, 0, RenderTextureFormat.ARGB32);
+                _resizedTexture.Create();
+            }
+
+            // Resize the webcam texture
+            Graphics.Blit(_webCamTexture, _resizedTexture);
+
+            // Set the resized texture as input
+            inputTexture = _resizedTexture;
+
+            // Ensure _input is allocated with the correct dimensions
+            if (_input == null || _input.width != desiredWidth || _input.height != desiredHeight)
+            {
+                if (_input != null)
+                {
+                    _input.Release();
+                }
+                _input = new RenderTexture(desiredWidth, desiredHeight, 0, RenderTextureFormat.ARGB32);
+                _input.Create();
+            }
 
             // Fast resize
             Graphics.Blit(inputTexture, _input);
 
             OnColorReady.Invoke(_input);
-            
+
             if (neuralNetworkModel == null)
+            {
+                Debug.Log("NN model is Null");
                 return;
+            }
             
             RunModel(_input);
 
@@ -89,17 +131,16 @@ namespace UnchartedLimbo.NN.Depth
         /// </summary>
         private void AllocateObjects()
         {
-            if (inputTexture == null)
-                return;
-
             // Check for accidental memory leaks
-            if (_input  != null) _input.Release();
+            if (_input != null) _input.Release();
             if (_output != null) _output.Release();
-            
+
+            Debug.Log("Render Texture Size: (" + desiredWidth + ", " + desiredHeight + ")");
+
             // Declare texture resources
-            _input  = new RenderTexture(_width, _height, 0, RenderTextureFormat.ARGB32);
-            _output = new RenderTexture(_width, _height, 0, RenderTextureFormat.RFloat);
-            
+            _input = new RenderTexture(desiredWidth, desiredHeight, 0, RenderTextureFormat.ARGB32);
+            _output = new RenderTexture(desiredWidth, desiredHeight, 0, RenderTextureFormat.RFloat); // Assuming RFloat is the desired format
+
             // Initialize memory
             _input.Create();
             _output.Create();

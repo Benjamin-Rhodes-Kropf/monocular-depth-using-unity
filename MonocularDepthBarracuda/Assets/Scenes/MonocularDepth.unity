@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.3807401, b: 0.358727, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -207,13 +207,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1204539628}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.97463864, z: -0.22378479, w: 0}
   m_LocalPosition: {x: 11.6, y: 17.1, z: 26}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 25.863, y: 180, z: 0}
 --- !u!1 &1527805084
 GameObject:
@@ -327,13 +327,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1527805084}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.2, y: 0, z: 38.4}
   m_LocalScale: {x: 4.1244445, y: 2.32, z: 2.32}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &5035345924985109945
 PrefabInstance:
@@ -347,6 +347,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: DEPTH_FROM_IMAGE
       objectReference: {fileID: 0}
+    - target: {fileID: 5035345924445761807, guid: 4419b5bdb69bf4d409962ad2e84b8b26, type: 3}
+      propertyPath: inputTexture
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5035345924445761807, guid: 4419b5bdb69bf4d409962ad2e84b8b26, type: 3}
+      propertyPath: neuralNetworkModel
+      value: 
+      objectReference: {fileID: 5022602860645237092, guid: 62b2e147d0bbd471b93ab01c35910adb, type: 3}
+    - target: {fileID: 5035345925824782643, guid: 4419b5bdb69bf4d409962ad2e84b8b26, type: 3}
+      propertyPath: colorTexture
+      value: 
+      objectReference: {fileID: 2800000, guid: 7cbbb7570f15c7f43a21e5b9a8a67b5f, type: 3}
     - target: {fileID: 5216533427654024721, guid: 4419b5bdb69bf4d409962ad2e84b8b26, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -396,3 +408,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4419b5bdb69bf4d409962ad2e84b8b26, type: 3}
+--- !u!1660057539 &9223372036854775807
+SceneRoots:
+  m_ObjectHideFlags: 0
+  m_Roots:
+  - {fileID: 1527805088}
+  - {fileID: 1204539631}
+  - {fileID: 5035345924985109945}
