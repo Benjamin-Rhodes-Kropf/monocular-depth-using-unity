@@ -90,6 +90,7 @@ namespace UnchartedLimbo.NN.Depth
 
         private void Update()
         {
+            mat.SetTexture(MainTex, useColorTexture ? colorTexture : null);
             mat.SetFloat(Min,             minDepth);
             mat.SetFloat(Max,             maxDepth);
             mat.SetFloat(DepthMultiplier, depthMultiplier);
@@ -231,6 +232,12 @@ namespace UnchartedLimbo.NN.Depth
         {
             minDepth = depthExtents.x;
             maxDepth = depthExtents.y;
+        }
+        
+        public void OnColorReceived(Texture colorTexture)
+        {
+            this.colorTexture = colorTexture;
+            useColorTexture = true; // Set this flag to true to use the color texture
         }
         
         // --------------------------------------------------------------------

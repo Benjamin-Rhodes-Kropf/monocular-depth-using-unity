@@ -14,6 +14,7 @@ namespace UnchartedLimbo.NN.Depth
 
         [Header("Parameters")]
         public bool calculateDepthExtents;
+        public DepthMesher depthMesher; // Reference to your DepthMesher instance
         private readonly int desiredWidth = 256;  // Model's desired width
         private readonly int desiredHeight = 256; // Model's desired height
 
@@ -28,6 +29,11 @@ namespace UnchartedLimbo.NN.Depth
         {
             get => inputTexture;
             set => inputTexture = value;
+        }
+        
+        public Texture ColorTexture
+        {
+            get { return _webCamTexture; } // Assuming _webCamTexture is your camera feed
         }
 
         private Model         _model;
@@ -96,6 +102,11 @@ namespace UnchartedLimbo.NN.Depth
 
             OnImageResized.Invoke(inputTexture.height / (float) inputTexture.width);
             OnDepthSolved.Invoke(_output);
+            
+            if(depthMesher != null)
+            {
+                depthMesher.OnColorReceived(ColorTexture);
+            }
         }
 
         private void OnDestroy() => DeallocateObjects();
